@@ -8,6 +8,7 @@ with lib; let
 
   mapOption = types.oneOf [
     types.str
+    helpers.rawType
     (types.submodule {
       options = {
         silent = mkOption {

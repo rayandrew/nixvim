@@ -55,6 +55,16 @@ with lib; rec {
           nowait = false;
           action = action;
         }
+        else if isRawType action
+        then {
+          inherit action;
+          silent = false;
+          expr = false;
+          unique = false;
+          noremap = true;
+          script = false;
+          nowait = false;
+        }
         else {
           inherit (action) silent expr unique noremap script nowait;
           action =
@@ -265,7 +275,10 @@ with lib; rec {
     };
   };
 
-  mkRaw = r: {__raw = r;};
+  mkRaw = r:
+    if isRawType r
+    then r
+    else {__raw = r;};
 
   wrapDo = string: ''
     do
@@ -284,4 +297,11 @@ with lib; rec {
   };
 
   isRawType = v: lib.isAttrs v && lib.hasAttr "__raw" v && lib.isString v.__raw;
+
+  isTruthy = v:
+    if (isNull v)
+    then false
+    else if (isBool v)
+    then v
+    else isRawType v;
 }

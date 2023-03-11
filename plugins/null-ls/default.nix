@@ -43,12 +43,32 @@ in {
     options = {
       debug = cfg.debug;
       sources = cfg.sourcesItems;
+      on_attach = helpers.mkRaw ''
+        function(current_client, bufnr)
+          if current_client.supports_method("textDocument/formatting") then
+            vim.api.nvim_clear_autocmds({ group = lsp_formatting_group, buffer = bufnr })
+            vim.api.nvim_create_autocmd("BufWritePre", {
+              group = lsp_formatting_group,
+              buffer = bufnr,
+              callback = function()
+                vim.lsp.buf.format({
+                  bufnr = bufnr,
+                  filter = function(client)
+                    return client.name == "null-ls"
+                  end,
+                })
+              end,
+            })
+          end
+        end
+      '';
     };
   in
     mkIf cfg.enable {
       extraPlugins = [cfg.package];
 
       extraConfigLua = ''
+        local null_ls_formatting_group = vim.api.nvim_create_augroup("LspFormatting", {})
         require("null-ls").setup(${helpers.toLuaObject options})
       '';
     };

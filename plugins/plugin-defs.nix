@@ -120,4 +120,16 @@
         })
       ];
   };
+
+  copilot-cmp = pkgs.vimUtils.buildVimPlugin rec {
+    pname = "copilot-cmp";
+    version = "92535dfd9c430b49ca7d9a7da336c5db65826b65";
+
+    src = pkgs.fetchFromGitHub {
+      owner = "zbirenbaum";
+      repo = "copilot-cmp";
+      rev = version;
+      sha256 = "sha256-Bu9Lx+1H1pG97ibwn8Q7jOHOKOrzg1nyucTTqbdlapI=";
+    };
+  };
 }

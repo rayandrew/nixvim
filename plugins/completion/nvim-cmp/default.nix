@@ -16,7 +16,15 @@ with lib; let
   in ''${functionName}(${parameterString})'';
 in {
   options.plugins.nvim-cmp = {
-    enable = mkEnableOption "nvim-cmp";
+    # enable = mkEnableOption "nvim-cmp";
+    enable = mkOption {
+      default = true;
+      type = types.nullOr (types.oneOf [
+        types.bool
+        helpers.rawType
+      ]);
+      description = "Whether to enable nvim-cmp";
+    };
 
     package = helpers.mkPackageOption "nvim-cmp" pkgs.vimPlugins.nvim-cmp;
 
@@ -47,7 +55,10 @@ in {
       type = types.nullOr (types.submodule ({...}: {
         options = {
           expand = mkOption {
-            type = types.nullOr types.str;
+            type = types.nullOr (types.oneOf [
+              types.str
+              helpers.rawType
+            ]);
             example = ''
               function(args)
                 vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
@@ -168,7 +179,10 @@ in {
           };
           format = mkOption {
             default = null;
-            type = types.nullOr types.str;
+            type = types.nullOr (types.oneOf [
+              types.str
+              helpers.rawType
+            ]);
             description = "A lua function as a string";
           };
         };
@@ -298,7 +312,7 @@ in {
 
     window = let
       # Reusable options
-      border = with types; mkNullOrOption (either str (listOf str)) null;
+      border = with types; mkNullOrOption (oneOf [str (listOf str) helpers.rawType (listOf helpers.rawType)]) null;
       winhighlight = mkNullOrOption types.str null;
       zindex = mkNullOrOption types.int null;
     in
@@ -313,6 +327,7 @@ in {
                   inherit border winhighlight zindex;
                   col_offset = mkNullOrOption types.int "Offsets the completion window relative to the cursor";
                   side_padding = mkNullOrOption types.int "The amount of padding to add on the completion window's sides";
+                  scrollbar = mkNullOrOption types.bool "The scrollbar is enabled";
                 };
               }));
             };
@@ -425,8 +440,10 @@ in {
       window = cfg.window;
       experimental = cfg.experimental;
     };
+
+    enabled = helpers.isTruthy cfg.enable;
   in
-    mkIf cfg.enable {
+    mkIf enabled {
       extraPlugins = [cfg.package];
 
       extraConfigLua = helpers.wrapDo ''

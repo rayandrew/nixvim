@@ -56,6 +56,12 @@ in {
         description = "Show source names in the popup";
       };
 
+      before = mkOption {
+        type = with types; nullOr types.str;
+        default = null;
+        description = "Function to run before calculating the formatting. function(entry, vim_item)";
+      };
+
       after = mkOption {
         type = with types; nullOr types.str;
         default = null;
@@ -65,7 +71,7 @@ in {
   };
 
   config = let
-    doCmp = cfg.cmp.enable && config.plugins.nvim-cmp.enable;
+    doCmp = cfg.cmp.enable && helpers.isTruthy config.plugins.nvim-cmp.enable;
     options =
       {
         mode = cfg.mode;

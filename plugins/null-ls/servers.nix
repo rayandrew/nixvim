@@ -61,6 +61,9 @@
       taplo = {
         package = pkgs.taplo;
       };
+      nixpkgs_fmt = {
+        package = pkgs.nixpkgs-fmt;
+      };
     };
   };
   # Format the servers to be an array of attrs like the following example
