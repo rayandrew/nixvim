@@ -111,7 +111,7 @@ with lib; rec {
         actionAttrs =
           if isString action
           then {inherit action;}
-          else value;
+          else action;
       in
         defaults // actionAttrs
     )
