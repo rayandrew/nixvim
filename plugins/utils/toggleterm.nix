@@ -5,7 +5,7 @@
   ...
 }:
 with lib; let
-  cfg = config.plugins.undotree;
+  cfg = config.plugins.toggleterm;
   helpers = import ../helpers.nix {inherit lib;};
   defs = import ../plugin-defs.nix {inherit pkgs;};
 in {

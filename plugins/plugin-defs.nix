@@ -141,7 +141,7 @@
       owner = "akinsho";
       repo = "toggleterm.nvim";
       rev = version;
-      sha256 = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+      sha256 = "sha256-J2Z/Rg6Lx023ghXg+4GNbF8TulQs0CXwv4pM0wCQ8Fc=";
     };
   };
 }
