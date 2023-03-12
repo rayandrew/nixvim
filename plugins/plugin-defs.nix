@@ -132,4 +132,16 @@
       sha256 = "sha256-Bu9Lx+1H1pG97ibwn8Q7jOHOKOrzg1nyucTTqbdlapI=";
     };
   };
+
+  toggleterm = pkgs.vimUtils.buildVimPlugin rec {
+    pname = "toggleterm";
+    version = "fd63194901fa80c65f6ff2951b8a975b0c13d9b1";
+
+    src = pkgs.fetchFromGitHub {
+      owner = "akinsho";
+      repo = "toggleterm.nvim";
+      rev = version;
+      sha256 = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    };
+  };
 }
